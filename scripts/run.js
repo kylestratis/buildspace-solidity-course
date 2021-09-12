@@ -1,6 +1,5 @@
 async function main() {
     // TODO: Move stats to blockchain?
-    let timeStats = new Map();
     let waverStats = new Map();
     const [owner, randoPerson] = await hre.ethers.getSigners();
     const waveContractFactory = await hre.ethers.getContractFactory("WavePortal");
