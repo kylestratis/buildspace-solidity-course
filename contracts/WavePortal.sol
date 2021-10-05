@@ -22,9 +22,14 @@ contract WavePortal {
         console.log("Constructed");
     }
 
+    mapping(address => uint) public lastWavedAt;
+
     function wave(string memory _message) public {
+        require(lastWavedAt[msg.sender] + 15 minutes < block.timestamp, "Wait 15m");
+        lastWavedAt[msg.sender] = block.timestamp;
+
         totalWaves += 1;
-        console.log("%s saved with message %s", msg.sender, _message);
+        console.log("%s waved with message %s", msg.sender, _message);
         waves.push(Wave(msg.sender, _message, block.timestamp));
         
         uint randomNumber = (block.difficulty + block.timestamp + seed) % 100;
@@ -38,8 +43,7 @@ contract WavePortal {
             require(success, "Failed to withdraw money from contract");
         }
         emit NewWave(msg.sender, block.timestamp, _message);
-
-            }
+    }
 
     function getAllWaves() view public returns (Wave[] memory) {
         return waves;
